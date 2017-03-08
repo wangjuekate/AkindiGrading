@@ -1,0 +1,10 @@
+data<-read.table("toclean.csv",sep=",",header=TRUE)
+countup<-function(input,total){
+mm<-gsub("[[:punct:]]","S",as.character(
+as.matrix(input[3:length(input)])))
+output<-total- length(grep("S",mm))
+return(output)
+}
+results<-apply(data,1,countup,ncol(data)-2)
+data1<-cbind(data[,1:2],results)
+write.table(data1,"cleanup.csv",sep=",",row.names=FALSE)
