@@ -1,3 +1,4 @@
+# Count the correct answers in a row
 data<-read.table("toclean.csv",sep=",",header=TRUE)
 countup<-function(input,total){
 mm<-gsub("[[:punct:]]","S",as.character(
