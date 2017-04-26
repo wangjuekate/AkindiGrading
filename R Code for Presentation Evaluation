@@ -1,0 +1,28 @@
+#format the evaluation sheet
+data<-read.table("Evaluate200.csv",sep=",",header=TRUE)
+#Calculate average for each group
+addscoreup<-function(input){
+results<-unlist(gsub("[[:punct:]]","",as.character(as.matrix(input[,3:44]))))
+num<-results[which(results!=" ")]
+num<-num[which(num!="")]
+results<-table(num)
+colname<-rownames(results)
+results<- t(as.numeric(as.matrix(results)))
+mm<-matrix(0,nrow=length(colname),ncol=1)
+for(i in 1:length(colname)){
+
+# Assign grade for five scales
+mm[i]<-switch(colname[i],
+A=1,
+B=2,
+C=3,
+D=4,
+E=5)
+}
+final<-results%*%mm
+final<-final/length(num)
+return(final)
+}
+library(plyr)
+results<-ddply(data,.(Team,Challenge),addscoreup)
+write.table(results, file="test.csv",row.names=FALSE,sep=",")
