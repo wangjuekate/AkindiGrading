@@ -1,0 +1,18 @@
+# Create Data structure for peer evaluation
+
+data<-read.table("student.csv",sep=",",header=TRUE)
+replicate<-function(input){
+results<-cbind(input[1,],input)
+for(i in 2:nrow(input)){
+mm<-cbind(input[i,],input)
+results<-rbind(results,mm)
+}
+results<-data.frame(results)
+return(results)
+}
+library(plyr)
+add<-ddply(data,.(Group),replicate)
+add<-data.frame(add)
+add1<-add[which(add[,3]!=add[,6]),]
+
+write.table(add1,file="work.csv",sep=",",row.names=FALSE)
