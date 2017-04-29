@@ -16,3 +16,15 @@ add<-data.frame(add)
 add1<-add[which(add[,3]!=add[,6]),]
 
 write.table(add1,file="work.csv",sep=",",row.names=FALSE)
+
+#calculate the average score
+data<-read.table("student.csv",sep=",",header=TRUE)
+average<-function(input){
+results<-sum(input[,4])/nrow(input)
+return(results)
+}
+library(plyr)
+add<-ddply(data,.(Name.1,ID.1),average)
+
+write.table(add,file="percent.csv",sep=",",row.names=FALSE)
+
