@@ -14,6 +14,10 @@ group[i,]$Team.write.up.B*15/100+
 
 students<-read.table("calcufinal.csv",sep=",",header=TRUE)
 students$finalgrade<-0
+students$PA<-0
+students$FT<-0
+students$G<-0
+students$Q<-0
 for(i in 1:nrow(students)){
 PA<-sum(students[i,5:37],na.rm=TRUE)
 PA<- PA*10/97
@@ -28,9 +32,17 @@ Q<-sum(sort(Quiz)[3:5])*10/24
 G<-group[which(students[i,]$Group==group[,1]),]$grade*
 students[i,]$PeerEvaluation/100
 students[i,]$finalgrade<-PA+FT+Q+G
+students[i,]$PA<-PA
+students[i,]$FT<-FT
+students[i,]$Q<-Q
+students[i,]$G<-G
 }
 data<-students[,1:4]
 data$finalgrade<-students$finalgrade
+data$PA<-students$PA
+dataFT<-students$FT
+data$Q<-students$Q
+data$G<-students$G
 write.table(data,file="grade.csv",row.names=FALSE,sep=",",na="")
 
 
