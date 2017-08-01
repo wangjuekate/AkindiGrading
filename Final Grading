@@ -1,0 +1,42 @@
+#group
+group<-read.table("group.csv",sep=",",header=TRUE)
+group$grade<-0
+for(i in 1:nrow(group)){
+group[i,]$grade<-
+sum(group[i,2:3])+
+group[i,]$Team.write.up.A*5/100+
+group[i,]$Team.write.up.B*15/100+
+(group[i,]$Team.final.presentation+group[i,]$TeamPresentStudent)*15/10+
+(group[i,]$Team.final.challenge+group[i,]$TeamChallengeStudent)*10/10
+}
+
+
+
+students<-read.table("calcufinal.csv",sep=",",header=TRUE)
+students$finalgrade<-0
+for(i in 1:nrow(students)){
+PA<-sum(students[i,5:37],na.rm=TRUE)
+PA<- PA*10/97
+FT<-students[i,]$FinalT+
+students[i,]$FinalM*1.5+students[i,]$FA1+students[i,]$FA2+
+students[i,]$FA3+
+students[i,]$FA4
+FT<-FT*25/60
+Quiz<-students[i,46:50]
+Quiz[which(is.na(Quiz))]<-0
+Q<-sum(sort(Quiz)[3:5])*10/24
+G<-group[which(students[i,]$Group==group[,1]),]$grade*
+students[i,]$PeerEvaluation/100
+students[i,]$finalgrade<-PA+FT+Q+G
+}
+data<-students[,1:4]
+data$finalgrade<-students$finalgrade
+write.table(data,file="grade.csv",row.names=FALSE,sep=",",na="")
+
+
+
+
+
+
+
+
